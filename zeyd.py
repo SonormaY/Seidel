@@ -3,23 +3,12 @@ import numpy as np
 
 def Solve(A, b, eps, max_iterations = 100):
     n = len(b)
-    d = [b[i] / A[i][i] for i in range(n)]
-    C = A
-    
+    x = [b[i] / A[i][i] for i in range(n)]
 
-    for i in range(n):
-        temp = C[i][i]
-        for j in range(n):
-            C[i][j] = (C[i][j] / temp) * -1
-        C[i][i] = 0
-    print(C)
-    print(d)
-
-    x = d.copy()
-    x_prev = d.copy()
+    x_prev = x.copy()
     
     for k in range(max_iterations):
-        max_error = 0     
+        max_error = 0
         for i in range(n):
             sum = 0
             temp = 0
@@ -30,7 +19,7 @@ def Solve(A, b, eps, max_iterations = 100):
             for j in range(i + 1, n):
                 temp += A[i][j] * x_prev[j]
             sum += temp
-            x[i] = b[i] + sum
+            x[i] = round((b[i] - sum) / A[i][i], 4)
             error = abs(x[i] - x_prev[i])
             max_error = max(max_error, error)
         x_prev = x.copy()
